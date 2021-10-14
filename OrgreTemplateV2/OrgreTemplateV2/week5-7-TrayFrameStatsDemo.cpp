@@ -21,20 +21,25 @@ class ExampleFrameListener : public Ogre::FrameListener
 {
 private:
     Ogre::SceneNode* _node;
+    Ogre::SceneNode* _node2;
     
 public:
 
-    ExampleFrameListener(Ogre::SceneNode* node)
+    ExampleFrameListener(Ogre::SceneNode* paddle, Ogre::SceneNode* ball)
     {
-        _node = node;
+        _node = paddle;
+         _node2 = ball;
     }
 
     bool frameStarted(const Ogre::FrameEvent& evt)
     {
         _node->translate(translate * evt.timeSinceLastFrame);
         translate = Ogre::Vector3(0, 0, 0);
+        _node2->translate(Ogre::Vector3(0, -1.0f, 0) * evt.timeSinceLastFrame);
+       
         return true;
     }
+    
 };
 
 class BasicTutorial1
@@ -43,7 +48,7 @@ class BasicTutorial1
 {
 private: 
     SceneNode* paddleNode;
-    //SceneNode* ballNode;
+    SceneNode* ballNode;
        SceneManager* scnMgr;
        Root* root;
        Ogre::FrameListener* FrameListener;
@@ -134,7 +139,7 @@ void BasicTutorial1::setup()
 
 
     Ogre::Entity* ballEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
-    Ogre::SceneNode* ballNode = scnMgr->getRootSceneNode()->createChildSceneNode();
+    ballNode = scnMgr->getRootSceneNode()->createChildSceneNode();
     ballNode->setPosition(0,0,0);
     ballNode->setScale(0.2f, 0.2f, 0.2f);
     ballNode->attachObject(ballEntity);
@@ -153,7 +158,7 @@ void BasicTutorial1::setup()
 }
 
 
-bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)
+bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)//moving paddle
 {
     switch (evt.keysym.sym)
     {
@@ -183,7 +188,7 @@ void BasicTutorial1::FrameUpdate() {
 
 void BasicTutorial1::createFrameListener()
 {
-     FrameListener = new ExampleFrameListener(paddleNode);
+    FrameListener = new ExampleFrameListener(paddleNode, ballNode);
     mRoot->addFrameListener(FrameListener);
     
 }
