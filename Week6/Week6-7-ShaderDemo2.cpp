@@ -1,8 +1,13 @@
-//Week6-7-ShaderDemo2.cpp
-//The new vertex shader is the same as the ones we've seen before; just add a new
-//parameter in the default_params block called pulseTime that gets the value
-//from the time keyword
-//Hooman Salamat
+/** @file Week6-7-ShaderDemo2.cpp
+ *  @brief Using Vertex/Fragment Shader
+ *
+ *  @attention Run this with GLSL 3plus renderer!
+ * The new vertex shader is the same as the ones we've seen before; just add a new
+ * parameter in the default_params block called pulseTime that gets the value
+ * from the time keyword
+ *  @author Hooman Salamat
+ *  @bug No known bugs.
+ */
 
 #include "Ogre.h"
 #include "OgreApplicationContext.h"
@@ -40,7 +45,7 @@ public:
     }
 };
 
-class OgreTutorial
+class Game
     : public ApplicationContext
     , public InputListener
 {
@@ -48,8 +53,8 @@ private:
     SceneManager* scnMgr;
     Root* root;
 public:
-    OgreTutorial();
-    virtual ~OgreTutorial() {}
+    Game();
+    virtual ~Game() {}
 
     void setup();
     void createScene();
@@ -60,13 +65,13 @@ public:
 };
 
 
-OgreTutorial::OgreTutorial()
-    : ApplicationContext("week6-6-OurFirstShaderDemo")
+Game::Game()
+    : ApplicationContext("week6-7-ShaderDemo2")
 {
 }
 
 
-void OgreTutorial::setup()
+void Game::setup()
 {
     // do not forget to call the base first
     ApplicationContext::setup();
@@ -84,7 +89,7 @@ void OgreTutorial::setup()
     createFrameListener();
 }
 
-void OgreTutorial::createScene()
+void Game::createScene()
 {
 
     // -- tutorial section start --
@@ -132,7 +137,7 @@ void OgreTutorial::createScene()
     // -- tutorial section end --
 }
 
-void OgreTutorial::createCamera()
+void Game::createCamera()
 {
 
     //! [camera]
@@ -152,7 +157,7 @@ void OgreTutorial::createCamera()
     //! [camera]
 }
 
-bool OgreTutorial::keyPressed(const KeyboardEvent& evt)
+bool Game::keyPressed(const KeyboardEvent& evt)
 {
     switch (evt.keysym.sym)
     {
@@ -177,7 +182,7 @@ bool OgreTutorial::keyPressed(const KeyboardEvent& evt)
     return true;
 }
 
-void OgreTutorial::createFrameListener()
+void Game::createFrameListener()
 {
     Ogre::FrameListener* FrameListener = new ExampleFrameListener(TriangleNode);
     mRoot->addFrameListener(FrameListener);
@@ -188,7 +193,7 @@ int main(int argc, char** argv)
 {
     try
     {
-        OgreTutorial app;
+        Game app;
         app.initApp();
         app.getRoot()->startRendering();
         app.closeApp();
