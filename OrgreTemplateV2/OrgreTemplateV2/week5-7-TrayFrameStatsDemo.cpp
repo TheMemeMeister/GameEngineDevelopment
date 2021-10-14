@@ -134,8 +134,10 @@ void BasicTutorial1::setup()
 
     // a friendly reminder
     StringVector names;
-    names.push_back("Help");
-    mTrayMgr->createParamsPanel(TL_TOPLEFT, "Help", 100, names)->setParamValue(0, "H/F1");
+    names.push_back("Score: 0");
+    names.push_back("Lives: 3");
+
+    mTrayMgr->createParamsPanel(TL_TOPLEFT, "Score ", 100, names)->setParamValue(0, "H/F1");
 
 
     Ogre::Entity* ballEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
