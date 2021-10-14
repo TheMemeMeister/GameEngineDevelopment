@@ -46,13 +46,14 @@ private:
     //SceneNode* ballNode;
        SceneManager* scnMgr;
        Root* root;
+       Ogre::FrameListener* FrameListener;
 public:
     BasicTutorial1();
     virtual ~BasicTutorial1() {}
 
     void setup();
     bool keyPressed(const KeyboardEvent& evt);
-    void createScene();
+    //void createScene();
     void createFrameListener();
     OgreBites::TrayListener myTrayListener;
     OgreBites::Label* mInfoLabel;
@@ -138,7 +139,7 @@ void BasicTutorial1::setup()
     ballNode->attachObject(ballEntity);
 
     Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
-    Ogre::SceneNode* paddleNode = scnMgr->getRootSceneNode()->createChildSceneNode();
+    paddleNode = scnMgr->getRootSceneNode()->createChildSceneNode();
     paddleNode->setPosition(  0,-10,0);
     paddleNode->setScale(0.2f, 0.05f, 1.0f);
     paddleNode->attachObject(paddleEntity);
@@ -158,12 +159,12 @@ bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)
     case SDLK_ESCAPE:
         getRoot()->queueEndRendering();
         break;
-    case 'w':
+   /* case 'w':
         translate = Ogre::Vector3(0, 0, -10);
         break;
     case 's':
         translate = Ogre::Vector3(0, 0, 10);
-        break;
+        break;*/
     case 'a':
         translate = Ogre::Vector3(-10, 0, 0);
         break;
@@ -178,7 +179,7 @@ bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)
     
 void BasicTutorial1::createFrameListener()
 {
-    Ogre::FrameListener* FrameListener = new ExampleFrameListener(paddleNode);
+     FrameListener = new ExampleFrameListener(paddleNode);
     mRoot->addFrameListener(FrameListener);
     
 }
