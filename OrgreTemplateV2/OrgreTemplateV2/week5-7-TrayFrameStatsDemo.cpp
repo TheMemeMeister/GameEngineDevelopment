@@ -55,6 +55,7 @@ public:
     bool keyPressed(const KeyboardEvent& evt);
     //void createScene();
     void createFrameListener();
+    void FrameUpdate();
     OgreBites::TrayListener myTrayListener;
     OgreBites::Label* mInfoLabel;
 };
@@ -176,7 +177,10 @@ bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)
     }
     return true;
 }
-    
+void BasicTutorial1::FrameUpdate() {
+    //Move ball here
+}
+
 void BasicTutorial1::createFrameListener()
 {
      FrameListener = new ExampleFrameListener(paddleNode);
