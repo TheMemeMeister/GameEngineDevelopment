@@ -23,6 +23,7 @@ private:
 public:
 	void CreatePaddle();
 	Vector3 GetPosition();
+	float SetSpeed();
 	//void GetShape(prefabType);
 	void Update(const Ogre::FrameEvent& evt);
 	void moveLeft();

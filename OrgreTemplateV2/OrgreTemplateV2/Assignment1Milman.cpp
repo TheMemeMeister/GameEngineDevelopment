@@ -17,7 +17,7 @@
 
 using namespace Ogre;
 using namespace OgreBites;
-Ogre::Vector3 btranslate(0, 0, 0);
+//Ogre::Vector3 btranslate(0, 0, 0);
 Ogre::int32 isCollide;
 Ogre::int32 movDirY;
 Ogre::int32 movDirX;
@@ -189,11 +189,14 @@ void Game::createScene()
     //ballNode->setPosition(0, 100, 0);
     //ballNode->setScale(0.1f, 0.1f, 0.1f);
     //ballNode->attachObject(ballEntity);
-    Ball ballTemp = Ball(scnMgr);
-    ball = &ballTemp;
-    Paddle paddleTemp = Paddle(scnMgr);
-    paddle = &paddleTemp;
-   
+   /* Ball ballTemp =  Ball(scnMgr);
+    ball = &ballTemp;*/
+    ball = new Ball(scnMgr);
+
+   /* Paddle paddleTemp = Paddle(scnMgr);
+    paddle = &paddleTemp;*/
+    paddle = new Paddle(scnMgr);
+
     //Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
     ////Ogre::SceneNode* 
     //paddleNode = scnMgr->getRootSceneNode()->createChildSceneNode();

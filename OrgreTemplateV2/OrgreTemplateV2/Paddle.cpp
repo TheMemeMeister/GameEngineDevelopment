@@ -20,6 +20,7 @@ void Paddle::Update(const Ogre::FrameEvent& evt)
 {
 	GetPosition();
 	paddleNode->translate(translate * evt.timeSinceLastFrame);
+	Ogre::Vector3 translate(0, 0, 0);
 	//translate = _translate;
 
 }
@@ -28,12 +29,14 @@ void Paddle::moveLeft()
 {
 	if (paddleNode->getPosition().x > -102)
 		translate = Ogre::Vector3(-30, 0, 0);
+	
 }
 
 void Paddle::moveRight()
 {
 	if (paddleNode->getPosition().x < 102)
 		translate = Ogre::Vector3(30, 0, 0);
+	
 }
 
 void Paddle::MakePaddleShape()
