@@ -1,1 +1,11 @@
-Welcome to Game Engine Development
+/**
+
+@mainpage assignment 1 
+@authorYaniv Milman 101270509 
+
+Make a 2D Pong Game Using OOP and OGRE Engine
+
+@attention Run Assignment 1 Milman 
+@attention This projects works with mouse to control paddle
+
+*/
