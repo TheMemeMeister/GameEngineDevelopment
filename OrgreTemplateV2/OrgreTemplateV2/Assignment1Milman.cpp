@@ -12,10 +12,12 @@
 #include "OgreRTShaderSystem.h"
 #include "OgreTrays.h"
 #include <iostream>
+#include "paddle.h"
+#include "ball.h"
 
 using namespace Ogre;
 using namespace OgreBites;
-Ogre::Vector3 translate(0, 0, 0);
+Ogre::Vector3 translate = Ogre::Vector3(0, 0, 0);
 Ogre::Vector3 btranslate(0, 0, 0);
 Ogre::int32 isCollide;
 Ogre::int32 movDirY;
@@ -27,24 +29,25 @@ Ogre::int32 lives = 3;
 class ExampleFrameListener : public Ogre::FrameListener
 {
 private:
-    Ogre::SceneNode* _node;
-    Ogre::SceneNode* _node2;
+    Paddle* gamepaddle;
+    Ball* gameball;
     
 public:
 
-    ExampleFrameListener(Ogre::SceneNode* paddle, Ogre::SceneNode* ball)
+    ExampleFrameListener(Paddle* paddle, Ball* ball)
     {
-        _node = paddle;
-         _node2 = ball;
+        gamepaddle = paddle;
+        gameball = ball;
     }
 
     bool frameStarted(const Ogre::FrameEvent& evt)
     {
-        _node->translate(translate * evt.timeSinceLastFrame);
-        translate = Ogre::Vector3(0, 0, 0);
-        btranslate = Ogre::Vector3(-10 * movDirX, -10 * movDirY, 0);
-        _node2->translate(btranslate * evt.timeSinceLastFrame);
-       
+       /* _node->translate(translate * evt.timeSinceLastFrame);
+        translate = Ogre::Vector3(0, 0, 0);*/
+        //gamepaddle->Update(evt);
+        //btranslate = Ogre::Vector3(-10 * movDirX, -10 * movDirY, 0);
+        //ball->translate(btranslate * evt.timeSinceLastFrame);
+
         return true;
     }
     
@@ -56,6 +59,8 @@ class Game
 {
 private: 
     SceneNode* paddleNode;
+    Paddle* paddle;
+    Ball* ball;
     SceneNode* ballNode;
        SceneManager* scnMgr;
        Root* root;
@@ -66,12 +71,10 @@ public:
 
     void setup();
     bool keyPressed(const KeyboardEvent& evt);
-    //void createScene();
-    bool frameRenderingQueued(const FrameEvent& evt);
+    //bool frameRenderingQueued(const FrameEvent& evt);
     void createScene();
     void createCamera();
-    void createFrameListener();
-    void FrameUpdate();
+    void createFrameListener(Paddle* paddle, Ball* ball);
     OgreBites::TrayListener myTrayListener;
     OgreBites::Label* mInfoLabel;
     OgreBites::Label* mScoreLabel;
@@ -91,6 +94,7 @@ Game::Game()
     movDirY = 1;
 
     movDirX = 0;// Ogre::Math::RangeRandom(-1, 1);
+
 }
 
 void Game::setup()
@@ -109,31 +113,32 @@ void Game::setup()
 
     createScene();
     createCamera();
-    createFrameListener();
+    createFrameListener(paddle,ball);
 }
 
 
 bool Game::keyPressed(const KeyboardEvent& evt)
 {
+    
     switch (evt.keysym.sym)
     {
+        
     case SDLK_ESCAPE:
         getRoot()->queueEndRendering();
         break;
 
     case 'a':
     case SDLK_LEFT:
-        if (paddleNode->getPosition().x > -102)
-            translate = Ogre::Vector3(-30, 0, 0);
+        paddle->moveLeft();
         break;
     case 'd':
     case SDLK_RIGHT:
-        if (paddleNode->getPosition().x < 102)
-            translate = Ogre::Vector3(30, 0, 0);
+        paddle->moveRight();
         break;
     default:
         break;
     }
+    
     return true;
 }
 void Game::createScene()
@@ -177,20 +182,24 @@ void Game::createScene()
     //mTrayMgr->createParamsPanel(TL_TOPLEFT, "Help", 100, names)->setParamValue(0, "H/F1");
 
 
-    Ogre::Entity* ballEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
-    //Ogre::SceneNode* 
-    ballNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-    ballNode->setPosition(0, 100, 0);
-    ballNode->setScale(0.1f, 0.1f, 0.1f);
-    ballNode->attachObject(ballEntity);
+    //Ogre::Entity* ballEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
+    ////Ogre::SceneNode* 
 
-
-    Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
-    //Ogre::SceneNode* 
-    paddleNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-    paddleNode->setPosition(0, -10, 0);
-    paddleNode->setScale(0.2f, 0.05f, 1.0f);
-    paddleNode->attachObject(paddleEntity);
+    //ballNode = scnMgr->getRootSceneNode()->createChildSceneNode();
+    //ballNode->setPosition(0, 100, 0);
+    //ballNode->setScale(0.1f, 0.1f, 0.1f);
+    //ballNode->attachObject(ballEntity);
+    Ball ballTemp = Ball(scnMgr);
+    ball = &ballTemp;
+    Paddle paddleTemp = Paddle(scnMgr);
+    paddle = &paddleTemp;
+   
+    //Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
+    ////Ogre::SceneNode* 
+    //paddleNode = scnMgr->getRootSceneNode()->createChildSceneNode();
+    //paddleNode->setPosition(0, -10, 0);
+    //paddleNode->setScale(0.2f, 0.05f, 1.0f);
+    //paddleNode->attachObject(paddleEntity);
 
     scnMgr->showBoundingBoxes(true);
 
@@ -218,92 +227,89 @@ void Game::createCamera()
 
 }
 
-void Game::FrameUpdate() {
-    //Move ball here
-}
 
-void Game::createFrameListener()
+void Game::createFrameListener(Paddle* paddle, Ball* ball)
 {
-    FrameListener = new ExampleFrameListener(paddleNode, ballNode);
+    FrameListener = new ExampleFrameListener(paddle, ball);
     mRoot->addFrameListener(FrameListener);
     
 }
 
-bool Game::frameRenderingQueued(const FrameEvent& evt) //update
-{
-    //moving ball
-    if (ballNode->getPosition().y > 130) // if ball is on top of screen
-    {
-        movDirY = 1;
-    }
-    if (ballNode->getPosition().y < -50) // if ball if on bottom of screen
-    {
-        //std::cout << "ball fall" << std::endl;
-        lives--;
-        l = std::to_string(lives); //lives going down
-        mLives->setCaption(l);
-        ballNode->setPosition(Ogre::Vector3(0, 100, 0));
-        std::cout << "lives:" << lives << std::endl;
-    }
-    if (ballNode->getPosition().x > 102) //checking vertical position of ball for reflection
-    {
-        movDirX = 1;
-        std::cout << "greater then 102" << std::endl;
-    }
-    if (ballNode->getPosition().x < -102)
-    {
-        std::cout << "less then -102" << std::endl;
-        movDirX = -1;
-    }
-    //collision
-    AxisAlignedBox spbox = ballNode->_getWorldAABB();
-    AxisAlignedBox cbbox = paddleNode->_getWorldAABB();
-    if (spbox.intersects(cbbox))
-    {
-        if (isCollide == 0)
-        {
-            std::cout << "collide";
-            isCollide = 1;
-            movDirY = -1;
-            score++;
-            sc = std::to_string(score);
-            mScore->setCaption(sc);
-            std::cout << "score:" << score << std::endl;
-            // btranslate = Ogre::Vector3(0, 10, 0);
-            const auto attackVector = ballNode->getPosition() - paddleNode->getPosition();
-            const auto normal = Ogre::Vector3(0, -1, 0);
-
-            const auto dot = attackVector.dotProduct(normal);
-            const auto angle = acos(dot / attackVector.length()) * Ogre::Math::fRad2Deg;
-
-            if ((attackVector.x > 0 && attackVector.y > 0) || (attackVector.x < 0 && attackVector.y > 0))
-                // bottom right or bottom left
-            {
-                //angle = 140;
-                if (angle <= 135)
-                {
-                    //object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
-                    movDirX = 1;
-                    movDirY = -1;
-                    std::cout << "bottom right" << std::endl;
-                }
-                else
-                {
-                    // object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
-                    movDirY = -1;
-                    movDirX = -1;
-                    std::cout << "bottom left" << std::endl;
-                }
-            }
-        }
-
-    }
-    else
-        isCollide = 0;
-
-
-    return true;
-}
+//bool Game::frameRenderingQueued(const FrameEvent& evt) //update
+//{
+//    //moving ball
+//    if (ballNode->getPosition().y > 130) // if ball is on top of screen
+//    {
+//        movDirY = 1;
+//    }
+//    if (ballNode->getPosition().y < -50) // if ball if on bottom of screen
+//    {
+//        //std::cout << "ball fall" << std::endl;
+//        lives--;
+//        l = std::to_string(lives); //lives going down
+//        mLives->setCaption(l);
+//        ballNode->setPosition(Ogre::Vector3(0, 100, 0));
+//        std::cout << "lives:" << lives << std::endl;
+//    }
+//    if (ballNode->getPosition().x > 102) //checking vertical position of ball for reflection
+//    {
+//        movDirX = 1;
+//        std::cout << "greater then 102" << std::endl;
+//    }
+//    if (ballNode->getPosition().x < -102)
+//    {
+//        std::cout << "less then -102" << std::endl;
+//        movDirX = -1;
+//    }
+//    //collision
+//    AxisAlignedBox spbox = ballNode->_getWorldAABB();
+//    AxisAlignedBox cbbox = paddleNode->_getWorldAABB();
+//    if (spbox.intersects(cbbox))
+//    {
+//        if (isCollide == 0)
+//        {
+//            std::cout << "collide";
+//            isCollide = 1;
+//            movDirY = -1;
+//            score++;
+//            sc = std::to_string(score);
+//            mScore->setCaption(sc);
+//            std::cout << "score:" << score << std::endl;
+//            // btranslate = Ogre::Vector3(0, 10, 0);
+//            const auto attackVector = ballNode->getPosition() - paddleNode->getPosition();
+//            const auto normal = Ogre::Vector3(0, -1, 0);
+//
+//            const auto dot = attackVector.dotProduct(normal);
+//            const auto angle = acos(dot / attackVector.length()) * Ogre::Math::fRad2Deg;
+//
+//            if ((attackVector.x > 0 && attackVector.y > 0) || (attackVector.x < 0 && attackVector.y > 0))
+//                // bottom right or bottom left
+//            {
+//                //angle = 140;
+//                if (angle <= 135)
+//                {
+//                    //object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
+//                    movDirX = 1;
+//                    movDirY = -1;
+//                    std::cout << "bottom right" << std::endl;
+//                }
+//                else
+//                {
+//                    // object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
+//                    movDirY = -1;
+//                    movDirX = -1;
+//                    std::cout << "bottom left" << std::endl;
+//                }
+//            }
+//        }
+//
+//    }
+//    else
+//        isCollide = 0;
+//
+//
+//    return true;
+//}
 
 
 int main(int argc, char** argv)
