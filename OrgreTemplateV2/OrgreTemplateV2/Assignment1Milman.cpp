@@ -1,13 +1,6 @@
 #pragma once
 
-/*-------------------------------------------------------------------------
-//To use Trays, you have to create an TrayManager. This is the class through which you will create and 
-//manage all your widgets, manipulate the cursor, change the backdrop image, adjust tray properties, 
-//pop up dialogs, show/hide the loading bar, etc. You can have multiple tray managers in one application.
--------------------------------------------------------------------------*/
-
-//! [fullsource]
-
+// copyright 2021 Yaniv Milman and Shlia Rani Das 
 #include "Ogre.h"
 #include "OgreApplicationContext.h"
 #include "OgreInput.h"
