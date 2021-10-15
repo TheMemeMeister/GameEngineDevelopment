@@ -18,26 +18,26 @@ a render surface. In our case, the 3D library is Direct X or OpenGL
 using namespace Ogre;
 using namespace OgreBites;
 
-class BasicTutorial1
+class Game
     : public ApplicationContext
     , public InputListener
 {
 public:
-    BasicTutorial1();
-    virtual ~BasicTutorial1() {}
+    Game();
+    virtual ~Game() {}
 
     void setup();
     bool keyPressed(const KeyboardEvent& evt);
 };
 
 
-BasicTutorial1::BasicTutorial1()
+Game::Game()
     : ApplicationContext("simpleSample")
 {
 }
 
 
-void BasicTutorial1::setup()
+void Game::setup()
 {
     // do not forget to call the base first
     ApplicationContext::setup();
@@ -116,7 +116,7 @@ void BasicTutorial1::setup()
 }
 
 
-bool BasicTutorial1::keyPressed(const KeyboardEvent& evt)
+bool Game::keyPressed(const KeyboardEvent& evt)
 {
     if (evt.keysym.sym == SDLK_ESCAPE)
     {
@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 {
     try
     {
-        BasicTutorial1 app;
+        Game app;
         app.initApp();
         app.getRoot()->startRendering();
         app.closeApp();
