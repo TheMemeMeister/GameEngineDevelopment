@@ -18,14 +18,7 @@ private:
 	Ogre::SceneNode* paddleNode;
 
 public:
-	//void CreatePaddle();
-	//Vector3 GetPosition();
-	//float SetSpeed();
-	////void GetShape(prefabType);
-	//void Update(const Ogre::FrameEvent& evt);
-	//void moveLeft();
-	//void moveRight();
-	//void MakePaddleShape();
+	
 	Paddle();
 	Paddle(Ogre::Entity* paddleEntity, SceneManager* _scnMgr);
 	~Paddle();

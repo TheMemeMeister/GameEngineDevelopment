@@ -79,8 +79,8 @@ public:
     virtual ~Game() {}
 
     void setup();
-    bool keyPressed(const KeyboardEvent& evt);
-    //bool mouseMoved(const MouseMotionEvent& evt) override;
+    //bool keyPressed(const KeyboardEvent& evt);
+    bool mouseMoved(const MouseMotionEvent& evt) override;
     bool frameRenderingQueued(const FrameEvent& evt);
     void createScene();
     void createCamera();
@@ -136,41 +136,41 @@ void Game::setup()
 }
 
 
-bool Game::keyPressed(const KeyboardEvent& evt)
-{
-    
-    switch (evt.keysym.sym)
-    {
-        
-    case SDLK_ESCAPE:
-        getRoot()->queueEndRendering();
-        break;
-
-    case 'a':
-    case SDLK_LEFT:
-        paddle->moveLeft();
-        break;
-    case 'd':
-    case SDLK_RIGHT:
-        paddle->moveRight();
-        break;
-    default:
-        break;
-    }
-    
-    return true;
-}
-
-//bool Game::mouseMoved(const MouseMotionEvent& evt)
+//bool Game::keyPressed(const KeyboardEvent& evt)
 //{
-//     Pause game when the game is over
 //    
+//    switch (evt.keysym.sym)
+//    {
+//        
+//    case SDLK_ESCAPE:
+//        getRoot()->queueEndRendering();
+//        break;
 //
-//    float mtw = (evt.x - (float)getRenderWindow()->getWidth() / 2.0f) * 0.5f;
-//
-//    paddleNode->setPosition(Vector3(mtw, -10.f, 0.f));
+//    case 'a':
+//    case SDLK_LEFT:
+//        paddle->moveLeft();
+//        break;
+//    case 'd':
+//    case SDLK_RIGHT:
+//        paddle->moveRight();
+//        break;
+//    default:
+//        break;
+//    }
+//    
 //    return true;
 //}
+
+bool Game::mouseMoved(const MouseMotionEvent& evt)
+{
+    /* Pause game when the game is over*/
+    
+
+    float mtw = (evt.x - (float)getRenderWindow()->getWidth() / 2.0f) * 0.5f;
+
+    paddleNode->setPosition(Vector3(mtw, -10.f, 0.f));
+    return true;
+}
 void Game::createScene()
 {
     // -- tutorial section start --
@@ -223,8 +223,10 @@ void Game::createScene()
     paddle = &paddleTemp;*/
     //paddle = new Paddle(scnMgr);
     Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
+  
 
     mPaddle = new Paddle(paddleEntity, scnMgr);
+    paddleNode = mPaddle->getShape();
     //Ogre::SceneNode* 
     
     //Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_PLANE);
