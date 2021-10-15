@@ -13,25 +13,33 @@ class Paddle
 	
 {
 private:
-	SceneManager* scnMgr;
-	SceneNode* paddleNode;
-	float speed;
-	SceneManager::PrefabType shape;
-	Ogre::Vector3 Position;
-	Ogre::Vector3 translate;
+	Ogre::int32 speed;
+	Ogre::Vector3 pos;
+	Ogre::SceneNode* paddleNode;
 
 public:
-	void CreatePaddle();
-	Vector3 GetPosition();
-	float SetSpeed();
-	//void GetShape(prefabType);
-	void Update(const Ogre::FrameEvent& evt);
-	void moveLeft();
-	void moveRight();
-	void MakePaddleShape();
-	Paddle(SceneManager* _scnMgr);
-	Paddle() {}
-	 ~Paddle() {}
+	//void CreatePaddle();
+	//Vector3 GetPosition();
+	//float SetSpeed();
+	////void GetShape(prefabType);
+	//void Update(const Ogre::FrameEvent& evt);
+	//void moveLeft();
+	//void moveRight();
+	//void MakePaddleShape();
+	Paddle();
+	Paddle(Ogre::Entity* paddleEntity, SceneManager* _scnMgr);
+	~Paddle();
+	 int isMouseActive;
+	 Ogre::Vector3 translate;
+	 Ogre::Vector3 getPosition();
+	 void setPosition(Ogre::Vector3);
+	 Ogre::SceneNode* getShape();
+	 Ogre::int32 getSpeed();
+	 void setSpeed(Ogre::int32 x);
+	 void update(const Ogre::FrameEvent& evt);
+	 void moveLeft();
+	 void moveRight();
+	 void reset();
 
 };
 

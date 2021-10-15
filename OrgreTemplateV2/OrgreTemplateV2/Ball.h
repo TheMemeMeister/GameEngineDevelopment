@@ -1,36 +1,30 @@
 #pragma once
 #include "Ogre.h"
-#include "OgreApplicationContext.h"
-#include "OgreInput.h"
-#include "OgreRTShaderSystem.h"
-#include "OgreTrays.h"
-#include <iostream>
-using namespace Ogre;
-using namespace OgreBites;
+//#include "OgreApplicationContext.h"
+//#include "OgreInput.h"
+//#include "OgreRTShaderSystem.h"
+//#include "OgreTrays.h"
+
 class Ball
-
-
 {
 private:
-	SceneManager* scnMgr;
-	SceneNode* BallNode;
-	float speed;
-	SceneManager::PrefabType shape;
-	Ogre::Vector3 Position;
-	Ogre::Vector3 btranslate;
-	Ogre::Vector3 Velocity;
-public:
-	void CreateBall();
-	Ball(SceneManager* _scnMgr);
-	Vector3 GetPosition();
-	//void GetShape(prefabType);
-	void Update(const Ogre::FrameEvent& evt);
-	void moveLeft();
-	void moveRight();
-	void MakeBallShape();
-	float setBallxVelocity();
-	float setBallyVelocity();
-	Ball() {}
-	~Ball() {}
+	Ogre::int32 velY;
+	Ogre::int32 velX;
+	Ogre::Vector3 pos;
+	Ogre::SceneNode* ball;
 
+public:
+	Ball();
+	Ball(Ogre::Entity* ballEntity, Ogre::SceneManager* scnMgr);
+	~Ball();
+	Ogre::Vector3 btranslate;
+	Ogre::Vector3 getPosition();
+	void setPosition(Ogre::Vector3);
+	Ogre::SceneNode* getShape();
+	Ogre::int32 getVelX();
+	void setVelX(Ogre::int32 x);
+	void setVelY(Ogre::int32 y);
+	Ogre::int32 getVelY();
+	void update(const Ogre::FrameEvent& evt);
+	void reset();
 };

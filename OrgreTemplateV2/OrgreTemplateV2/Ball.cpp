@@ -1,45 +1,78 @@
 #include "Ball.h"
-Ogre::Vector3 btranslate(0, 0, 0);
-
-void Ball::CreateBall ()
+Ball::Ball()
 {
-	Ogre::Entity* BallEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
-	//Ogre::SceneNode* 
-	BallNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-	BallNode->setPosition(0, -100, 0);
-	BallNode->setScale(0.1f, 0.1f, 0.1f);
-	BallNode->attachObject(BallEntity);
 }
-Vector3 Ball::GetPosition()
+Ball::Ball(Ogre::Entity* ent, Ogre::SceneManager* scnMgr)
 {
-	return BallNode->getPosition();
+	ball = scnMgr->getRootSceneNode()->createChildSceneNode();
+	ball->setPosition(0, 100, 0);
+	ball->setScale(0.1f, 0.1f, 0.1f);
 
-}
+	ball->attachObject(ent);
+	reset();
 
-void Ball::Update(const Ogre::FrameEvent& evt)
-{
-	GetPosition();
-	BallNode->translate(btranslate * evt.timeSinceLastFrame);
-	//translate = _translate;
+	pos = ball->getPosition();
 
 }
-
-
-
-
-void Ball::MakeBallShape()
+Ball::~Ball()
 {
-	Ogre::Entity* paddleEntity = scnMgr->createEntity(SceneManager::PrefabType::PT_SPHERE);
-	BallNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-	BallNode->attachObject(paddleEntity);
+}
+void Ball::reset() {
+	velY = 1;
+
+	velX = 0;
+	btranslate = Ogre::Vector3(0, 0, 0);
+}
+Ogre::Vector3 Ball::getPosition()
+{
+	return pos;
+}
+void Ball::setPosition(Ogre::Vector3 p)
+{
+	pos = p;
 }
 
-Ball::Ball(SceneManager* _scnMgr)
-
+Ogre::SceneNode* Ball::getShape()
 {
+	return ball;
+}
 
-	scnMgr = _scnMgr;
-	CreateBall();
+Ogre::int32 Ball::getVelX()
+{
+	return velX;
+}
 
+void Ball::setVelX(Ogre::int32 x)
+{
+	velX = x;
+}
 
+Ogre::int32 Ball::getVelY()
+{
+	return velY;
+}
+void Ball::setVelY(Ogre::int32 y)
+{
+	velY = y;
+}
+void Ball::update(const Ogre::FrameEvent& evt)
+{
+	btranslate = Ogre::Vector3(-10 * velX, -10 * velY, 0);
+	//moving ball
+	if (ball->getPosition().y > 135)
+	{
+		velY = 1;
+	}
+
+	if (ball->getPosition().x > 112)
+	{
+		velX = 1;
+		// std::cout << "greater then 112" << std::endl;
+	}
+	if (ball->getPosition().x < -112)
+	{
+		//std::cout << "less then -112" << std::endl;
+		velX = -1;
+	}
+	ball->translate(btranslate * evt.timeSinceLastFrame);
 }
