@@ -57,7 +57,7 @@ void Ball::setVelY(Ogre::int32 y)
 }
 void Ball::update(const Ogre::FrameEvent& evt)
 {
-	btranslate = Ogre::Vector3(-10 * velX, -10 * velY, 0);
+	btranslate = Ogre::Vector3(-100 * velX, -100 * velY, 0);
 	//moving ball
 	if (ball->getPosition().y > 135)
 	{
