@@ -39,12 +39,12 @@ public:
         gameball = ball;
     }
 
-    bool frameStarted(const Ogre::FrameEvent& evt)
+    bool frameStarted(const Ogre::FrameEvent& evt, Paddle* paddle2)
     {
        /* _node->translate(translate * evt.timeSinceLastFrame);
         translate = Ogre::Vector3(0, 0, 0);*/
         
-        gamepaddle -> Update(evt);
+        paddle2->Update(evt);
         //btranslate = Ogre::Vector3(-10 * movDirX, -10 * movDirY, 0);
         //ball->translate(btranslate * evt.timeSinceLastFrame);
 

@@ -1,5 +1,5 @@
 #include "Paddle.h"
-
+Ogre::Vector3 translate(0, 0, 0);
 
 
 void Paddle::CreatePaddle()
