@@ -40,7 +40,7 @@ public:
         translate = Ogre::Vector3(0, 0, 0);*/
          //btranslate = Ogre::Vector3(-10*movDirX, -10 * movDirY, 0);
          //gameball->translate(btranslate * evt.timeSinceLastFrame);
-        //gamepaddle -> Update(evt);
+        //gamepaddle -> update(evt);
         //btranslate = Ogre::Vector3(-10 * movDirX, -10 * movDirY, 0);
         //ball->translate(btranslate * evt.timeSinceLastFrame);
 
@@ -183,6 +183,7 @@ void Game::createScene()
 
 
     OgreBites::TrayManager* mTrayMgr = new OgreBites::TrayManager("InterfaceName", getRenderWindow());
+    mTrayMgr->hideCursor();
 
     //you must add this in order to add a tray
     scnMgr->addRenderQueueListener(mOverlaySystem);
